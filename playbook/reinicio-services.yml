@@ -1,0 +1,10 @@
+---
+- hosts: servidores_app
+  become: true
+  remote_user: root
+  tasks:
+    - name: reincio servicio php
+      service:
+         name: php        
+         state: restarted
+

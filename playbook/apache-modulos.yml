@@ -1,0 +1,26 @@
+---
+ - hosts: servidores_app
+   become: true
+   tasks:
+     - name: httpd
+       yum:
+         name: httpd 
+         update_cache: yes 
+         state: latest
+
+     - name: enabled mod_rewrite
+       lineinfile:
+         path: /etc/httpd/conf/httpd.conf
+         regexp: '^#?LoadModule rewrite_module'
+         line: 'LoadModule rewrite_module modules/mod_rewrite.so'
+         state: present
+       notify:
+         - Reiniciar httpd
+   
+  handlers: 
+      - name: restart httpd
+        service: 
+          name: httpd
+          state: restarted
+
+

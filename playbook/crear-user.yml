@@ -1,0 +1,9 @@
+---
+- hosts: servidores_app
+  vars_files: 
+    - ../seguridad/variables.txt
+  tasks:
+    - name: Create_a_new_user_name_operator
+      user: 
+        name: mendozar
+        password: "{{ password | password_hash('sha512') }}"

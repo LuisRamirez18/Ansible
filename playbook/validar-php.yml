@@ -1,0 +1,25 @@
+---
+- name: Verificar si PHP está instalado y en ejecución
+  hosts: servidores_app
+  become: true
+  tasks:
+    - name: Verificar si PHP está instalado
+      package_facts:
+        manager: auto
+
+    - name: Comprobar si PHP está instalado
+      debug:
+        msg: "PHP está instalado"
+      when: "'php' in ansible_facts.packages"
+
+    - name: Comprobar si PHP no está instalado
+      debug:
+        msg: "PHP no está instalado"
+      when: "'php' not in ansible_facts.packages"
+
+    - name: Verificar si el servicio PHP (php-fpm) está activo
+      service:
+        name: php-fpm
+        state: started
+      register: php_service_status
+      failed_when: false

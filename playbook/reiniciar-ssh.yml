@@ -1,0 +1,9 @@
+---
+- hosts: servidores_app
+  become: true
+  tasks:
+    - name: Rebooting_ssh_service
+      service:
+        name: sshd
+        state: restarted
+        enabled: yes

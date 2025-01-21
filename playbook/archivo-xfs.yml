@@ -1,0 +1,12 @@
+---
+- hosts: servidores_app
+  roles:
+    - name: linux-system-roles.storage
+      vars:  
+        storage_volumes:
+          - name: barefs
+            type: disk
+            disks:
+              - device: /run
+              - fs_type: xfs
+

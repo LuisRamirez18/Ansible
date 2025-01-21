@@ -1,0 +1,19 @@
+---
+- name: Verificar e instalar PHP 8.2
+  hosts: servidores_app
+  become: true
+  tasks:
+    - name: Verificar si PHP está instalado
+      shell: which php
+      register: php_check
+      ignore_errors: true
+
+    - name: Instalar PHP 8.2 si no está instalado
+      apt:
+        name: php8.2
+        state: latest
+      when: php_check.rc != 0
+
+    - name: Confirmar la instalación de PHP
+      command: php -v
+      when: php_check.rc != 0

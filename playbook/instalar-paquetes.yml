@@ -1,0 +1,14 @@
+---
+- hosts: servidores_app
+  remote_user: root
+  become: true
+  tasks:
+    - name: instalando nginx
+      dnf:
+        name: nginx
+        state: present
+
+    - name: instalando postgresql
+      dnf: 
+        name: postgresql-server
+        state: present

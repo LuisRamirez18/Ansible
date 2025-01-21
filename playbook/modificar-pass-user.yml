@@ -1,0 +1,8 @@
+---
+- hosts: servidores_app
+  tasks:
+    - name: Change_admin_user_password
+      user: 
+        name: admin
+        update_password: always
+        password: "{{ 'password123' | password_hash('sha512') }}"

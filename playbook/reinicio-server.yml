@@ -1,0 +1,11 @@
+---
+- name: Reiniciar servidor app
+  hosts: server
+  become: true
+  become_user: root
+  
+  tasks:
+    - name: Reiniciar nodo3
+      reboot:
+        reboot_timeout: 600
+        test_command: whoami

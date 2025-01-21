@@ -1,0 +1,29 @@
+---
+- name: Verificar el estado del servicio SSHD
+  hosts: servidores_app
+  become: true
+  tasks:
+    - name: Recopilar información sobre servicios
+      service_facts:
+
+    - name: Comprobar el estado del servicio SSHD
+      debug:
+        msg: >
+          El servicio SSH ({{ 'sshd' if ansible_os_family == 'RedHat' else 'ssh' }}) está 
+          {{ ansible_facts.services[('sshd' if ansible_os_family == 'RedHat' else 'ssh')].state }}.
+
+    - name: Reiniciar el servicio SSH si no está activo
+      service:
+        name: "{{ 'sshd' if ansible_os_family == 'RedHat' else 'ssh' }}"
+        state: restarted
+      when: >
+        ansible_facts.services[('sshd' if ansible_os_family == 'RedHat' else 'ssh')].state != 'running'
+
+    - name: Confirmar que el puerto SSH está escuchando
+      shell: netstat -tuln | grep :22
+      register: ssh_port_check
+      changed_when: false
+
+    - name: Mostrar el resultado de la verificación del puerto SSHD
+      debug:
+        msg: "{{ ssh_port_check.stdout }}"

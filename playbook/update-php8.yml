@@ -1,0 +1,16 @@
+---
+- name: Actualizar PHP a la versión 8.2
+  hosts: servidores_app
+  become: true
+  tasks:
+    - name: Verificar la versión de PHP instalada
+      command: php -v
+      register: result
+
+    - name: Actualizar PHP a la versión 8.2 si es necesario
+      apt:
+        name: php8.2
+        state: latest
+      when: >
+        result.stdout is defined and
+        (result.stdout | regex_search('PHP (\\d+\\.\\d+)') | first | version_compare('8.2', '<'))

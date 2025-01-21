@@ -1,0 +1,23 @@
+---
+- name: Verificar e instalar Python 3.11
+  hosts: servidores_app
+  become: true
+  tasks:
+    - name: Verificar la versión de Python instalada
+      command: python3 --version
+      register: python_version
+      ignore_errors: true
+
+    - name: Extraer versión de Python
+      set_fact:
+        current_python_version: "{{ python_version.stdout.split(' ')[1] }}"
+      when: python_version.rc == 0
+
+    - name: Instalar Python 3.11 si no está instalado o es una versión inferior
+      package:
+        name: python3.11
+        state: latest
+      when: python_version.rc != 0 or current_python_version is version('3.11', '<')
+
+    - name: Confirmar la instalación de Python
+      command: python3 --version

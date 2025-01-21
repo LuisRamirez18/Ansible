@@ -1,0 +1,10 @@
+---
+- name: Activar y asegurar el servicio SSH
+  hosts: servidores_app
+  become: true
+  tasks:
+    - name: Habilitar el servicio SSH
+      service:
+        name: "{{ 'sshd' if ansible_os_family == 'RedHat' else 'ssh' }}"
+        enabled: yes
+        state: started

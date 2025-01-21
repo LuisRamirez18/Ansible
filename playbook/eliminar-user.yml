@@ -1,0 +1,10 @@
+---
+- name: Eliminar usuario bob
+  hosts: servidores_app
+  become: true
+  tasks: 
+    - name: Delete_Bob_user 
+      user:
+        name: bob
+        state: absent
+        remove: yes

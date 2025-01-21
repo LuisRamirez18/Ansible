@@ -1,0 +1,14 @@
+---
+- hosts: servidores_app
+  become: true
+  become_user: root
+  tasks:
+    - name: Instalar apache2
+      yum: 
+        name: httpd
+        state: present
+
+    - name: Instalar MariaDB 
+      yum: 
+        name: mariadb
+        state: present
